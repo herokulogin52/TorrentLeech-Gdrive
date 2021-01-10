@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# (c) Shrimadhav U K
+# (c) Shrimadhav U K | gautamajay52
 
 # the logging things
 import logging
@@ -51,7 +51,7 @@ async def create_archive(input_directory):
             return_name = compressed_file_name
     return return_name
 
-#
+#@gautamajay52
 
 async def unzip_me(input_directory):
     return_name = None
@@ -64,16 +64,12 @@ async def unzip_me(input_directory):
             #compressed_file_name = base_dir_name[0:(64 - suffix_extention_length)]
             #compressed_file_name += ".tar.gz"
         # fix for https://t.me/c/1434259219/13344
-        process = subprocess.Popen([
-            "unzip",
-            "-o",
-            f"{base_dir_name}",
-            "-d",
-            f"{uncompressed_file_name}"],
-            stdout=subprocess.PIPE
-        )
+        g_cmd = ["unzip", "-o", f"{base_dir_name}", "-d", f"{uncompressed_file_name}"]
+        ga_utam = await asyncio.create_subprocess_exec(*g_cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
         # Wait for the subprocess to finish
-        stdout, stderr = process.communicate()
+        gau, tam = await ga_utam.communicate()
+        LOGGER.info(gau)
+        LOGGER.info(tam)
         #e_response = stderr.decode().strip()
         #t_response = stdout.decode().strip()
         if os.path.exists(uncompressed_file_name):
@@ -84,4 +80,53 @@ async def unzip_me(input_directory):
             return_name = uncompressed_file_name
             print(return_name)
     return return_name
-    
+#
+async def untar_me(input_directory):
+    return_name = None
+    if os.path.exists(input_directory):
+        print(input_directory)
+        base_dir_name = os.path.basename(input_directory)
+        uncompressed_file_name = os.path.splitext(base_dir_name)[0]
+        m_k_gaut = ['mkdir', f'{uncompressed_file_name}']
+        await asyncio.create_subprocess_exec(*m_k_gaut, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
+        g_cmd_t = ["tar", "-xvf", f"/app/{base_dir_name}", "-C", f"{uncompressed_file_name}"]
+        bc_kanger = await asyncio.create_subprocess_exec(*g_cmd_t, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
+        # Wait for the subprocess to finish
+        mc, kanger = await bc_kanger.communicate()
+        LOGGER.info(mc)
+        LOGGER.info(kanger)
+        #e_response = stderr.decode().strip()
+        #t_response = stdout.decode().strip()
+        if os.path.exists(uncompressed_file_name):
+            try:
+                os.remove(input_directory)
+            except:
+                pass
+            return_name = uncompressed_file_name
+            LOGGER.info(return_name)
+    return return_name
+#
+async def unrar_me(input_directory):
+    return_name = None
+    if os.path.exists(input_directory):
+        base_dir_name = os.path.basename(input_directory)
+        uncompressed_file_name = os.path.splitext(base_dir_name)[0]
+        m_k_gau = ['mkdir', f'{uncompressed_file_name}']
+        await asyncio.create_subprocess_exec(*m_k_gau, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
+        print(base_dir_name)
+        gau_tam_r = ["unrar", "x", f"{base_dir_name}", f"{uncompressed_file_name}"]
+        jai_hind = await asyncio.create_subprocess_exec(*gau_tam_r, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
+        # Wait for the subprocess to finish
+        jai, hind = await jai_hind.communicate()
+        LOGGER.info(jai)
+        LOGGER.info(hind)
+        #e_response = stderr.decode().strip()
+        #t_response = stdout.decode().strip()
+        if os.path.exists(uncompressed_file_name):
+            try:
+                os.remove(input_directory)
+            except:
+                pass
+            return_name = uncompressed_file_name
+            LOGGER.info(return_name)
+    return return_name
